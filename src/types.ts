@@ -1,26 +1,48 @@
-export type P38Mode = 'altitude_depth' | 'earth_shape' | 'earth_rotation' | 'g_determination';
+export type Language = 'bn' | 'en';
+export type AppTheme = 'clean_bright' | 'midnight';
+export type PresetMode = 'altitude' | 'depth' | 'earth_shape' | 'diurnal_rotation' | 'cavendish';
 
-export interface AltitudeDepthParams {
-  altitudeKm: number; // 0 to 20,000 km
-  depthKm: number; // 0 to 6,371 km
-  probeMode: 'altitude' | 'depth';
-  objectMass: number; // kg
-  pendulumLength: number; // m
-}
+export interface SimulationParams {
+  preset: PresetMode;
+  theme: AppTheme;
 
-export interface EarthShapeParams {
+  // 1. Altitude
+  altitudeH: number; // km (0 to 6400 km)
+  useApproximation: boolean; // compare exact vs (1 - 2h/R)
+
+  // 2. Depth
+  depthD: number; // km (0 to 6371 km)
+
+  // 3. Earth Shape
+  selectedLocation: 'pole' | 'dhaka' | 'equator' | 'everest';
+  
+  // 4. Diurnal Rotation
   latitudeDeg: number; // 0 to 90 degrees
-  objectMass: number;
+  rotationMultiplier: number; // 1 to 20x (17x is weightlessness at equator)
+
+  // 5. General & Cavendish
+  testMass: number; // kg (default 50 kg)
+  earthMassScale: number; // 1.0 (5.972e24 kg)
+  
+  // Visual Toggles
+  showVectors: boolean;
+  showEarthCutaway: boolean;
+  showEquatorialBulge: boolean;
+  showGrid: boolean;
+  slowMo: boolean;
 }
 
-export interface EarthRotationParams {
-  omegaMultiplier: number; // 1x (normal) to 20x
-  latitudeDeg: number; // 0 to 90 degrees
-  objectMass: number;
-}
-
-export interface DeterminationParams {
-  pendulumLength: number; // 0.5 to 2.5 m
-  amplitudeDeg: number; // 2 to 10 deg
-  locationPreset: 'equator' | 'dhaka' | 'pole' | 'everest';
+export interface TelemetryState {
+  elapsedTime: number;
+  currentG: number; // m/s^2
+  surfaceG: number; // m/s^2 (9.81)
+  approxG?: number; // m/s^2
+  deltaG: number; // m/s^2
+  percentChange: number; // %
+  apparentWeight: number; // N
+  currentRadius: number; // km
+  centrifugalAcc: number; // m/s^2
+  criticalRotationMultiple: number; // ~17.08x
+  dayLengthHours: number; // hours
+  latitudeRad: number;
 }
