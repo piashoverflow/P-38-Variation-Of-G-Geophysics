@@ -1,0 +1,6 @@
+{
+  "name": "P-38: Determination & Variations of Acceleration Due to Gravity (g)",
+  "description": "Interactive geophysics and gravitation simulator modeling altitude, depth, oblate Earth shape, and diurnal rotation variations of gravity g.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
